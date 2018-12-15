@@ -113,10 +113,18 @@ public class MainPanel extends JPanel {
 	private void onGenerateQuestionsClick() {
 
 		System.out.println(spinner.getValue());
-		String questions = this.c.generateQuestions(this.qSetTxtFld, (int) spinner.getValue());
+		String questions = null;
+		
+		try {
+			questions = this.c.generateQuestions(this.qSetTxtFld, (int) spinner.getValue());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			 JOptionPane.showMessageDialog(this, "wrong format for questions");
+
+			e.printStackTrace();
+		}
 		this.responseTxtArea.setText(questions);
 
-		// JOptionPane.showMessageDialog(this, "wrong format for questions");
 
 	}
 
