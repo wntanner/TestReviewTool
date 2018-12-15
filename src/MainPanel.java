@@ -13,45 +13,60 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import java.awt.Dimension;
 
+/**
+ * Holds all of the user interface objects controls input and output of random
+ * questions
+ * 
+ * @author William
+ *
+ */
 public class MainPanel extends JPanel {
+
 	public static Font FONT = new Font("Tahoma", Font.PLAIN, 20);
+
 	private Controller c;
-	private JTextField qSetTxtFld;
-	private JTextArea responseTxtArea;
-	private JSpinner spinner;
+	private JTextField qSetTxtFld; // question set text field for getting question sets
+	private JTextArea responseTxtArea; // area for displaying randomly selected questions
+	private JSpinner spinner; // controls # random questions selected
 
 	public MainPanel() {
 		setLayout(new BorderLayout(0, 0));
 
 		c = Controller.getController();
 
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.NORTH);
-		panel.setLayout(new BorderLayout(0, 0));
+		// displays how question sets should be formatted
+		JPanel pnlFormat_North = new JPanel();
+		add(pnlFormat_North, BorderLayout.NORTH);
+		pnlFormat_North.setLayout(new BorderLayout(0, 0));
 
-		JLabel lblFormat = new JLabel("Question Set Format: ");
-		lblFormat.setFont(FONT);
-		panel.add(lblFormat, BorderLayout.WEST);
+		// JLabels displaying format of question sets
+		JLabel lblFormatLbl = new JLabel("Question Set Format: ");
+		lblFormatLbl.setFont(FONT);
+		pnlFormat_North.add(lblFormatLbl, BorderLayout.WEST);
 
-		JLabel lblLabelnnNN = new JLabel("Label1: num1; Label2: num2;...");
-		lblLabelnnNN.setFont(FONT);
-		panel.add(lblLabelnnNN);
+		JLabel lblFormatBody = new JLabel("Label1: num1; Label2: num2;...");
+		lblFormatBody.setFont(FONT);
+		pnlFormat_North.add(lblFormatBody);
 
-		JPanel panel_1 = new JPanel();
-		add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		// gets the question set information and button to select random questions in
+		// north
+		// displays random questions in center
+		JPanel pnlQuestionSetInformation_Center = new JPanel();
+		add(pnlQuestionSetInformation_Center, BorderLayout.CENTER);
+		pnlQuestionSetInformation_Center.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2, BorderLayout.NORTH);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		// holds onto the input for question sets
+		JPanel pnlQuestionSet = new JPanel();
+		pnlQuestionSetInformation_Center.add(pnlQuestionSet, BorderLayout.NORTH);
+		pnlQuestionSet.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblEnterQuestionSet = new JLabel("Enter Question Set: ");
 		lblEnterQuestionSet.setFont(FONT);
-		panel_2.add(lblEnterQuestionSet, BorderLayout.WEST);
+		pnlQuestionSet.add(lblEnterQuestionSet, BorderLayout.WEST);
 
 		qSetTxtFld = new JTextField();
 		qSetTxtFld.setFont(FONT);
-		panel_2.add(qSetTxtFld, BorderLayout.CENTER);
+		pnlQuestionSet.add(qSetTxtFld, BorderLayout.CENTER);
 		qSetTxtFld.setColumns(20);
 
 		JButton btnSelect = new JButton("Select Questions");
@@ -62,16 +77,16 @@ public class MainPanel extends JPanel {
 		});
 
 		btnSelect.setFont(FONT);
-		panel_2.add(btnSelect, BorderLayout.EAST);
+		pnlQuestionSet.add(btnSelect, BorderLayout.EAST);
 
-		JPanel panel_4 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_4.getLayout();
+		JPanel pnlQuestionsPerSet = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) pnlQuestionsPerSet.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
-		panel_2.add(panel_4, BorderLayout.NORTH);
+		pnlQuestionSet.add(pnlQuestionsPerSet, BorderLayout.NORTH);
 
 		JLabel lblQuestionsPerSet = new JLabel("Questions Per Set:");
 		lblQuestionsPerSet.setFont(FONT);
-		panel_4.add(lblQuestionsPerSet);
+		pnlQuestionsPerSet.add(lblQuestionsPerSet);
 
 		spinner = new JSpinner();
 		spinner.setPreferredSize(new Dimension(50, 22));
@@ -79,36 +94,30 @@ public class MainPanel extends JPanel {
 		spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 
 		spinner.setFont(FONT);
-		panel_4.add(spinner);
+		pnlQuestionsPerSet.add(spinner);
 
-		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3, BorderLayout.CENTER);
-		panel_3.setLayout(new BorderLayout(0, 0));
+		// displays the random questions
+		JPanel pnlRandomQuestions = new JPanel();
+		pnlQuestionSetInformation_Center.add(pnlRandomQuestions, BorderLayout.CENTER);
+		pnlRandomQuestions.setLayout(new BorderLayout(0, 0));
 
 		responseTxtArea = new JTextArea();
 		responseTxtArea.setFont(FONT);
-		panel_3.add(responseTxtArea);
+		pnlRandomQuestions.add(responseTxtArea);
 
 	}
 
-	private boolean verifyQuestionFormat() {
-		boolean isFine = true;
-		// TODO
-
-		return isFine;
-	}
-
+	/**
+	 * Generates random questions from user input
+	 */
 	private void onGenerateQuestionsClick() {
 
-		boolean fine = verifyQuestionFormat();
+		System.out.println(spinner.getValue());
+		String questions = this.c.generateQuestions(this.qSetTxtFld, (int) spinner.getValue());
+		this.responseTxtArea.setText(questions);
 
-		if (fine) {
-			System.out.println(spinner.getValue());
-			String questions = this.c.generateQuestions(this.qSetTxtFld, (int)spinner.getValue());
-			this.responseTxtArea.setText(questions);
-		} else {
-			JOptionPane.showMessageDialog(this, "wrong format for questions");
-		}
+		// JOptionPane.showMessageDialog(this, "wrong format for questions");
+
 	}
 
 }
