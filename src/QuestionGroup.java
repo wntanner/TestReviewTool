@@ -7,7 +7,7 @@
  */
 public class QuestionGroup {
 	
-	private String label;
+	private String label; // name of question set
 	private int num; // # questions in the group
 	
 	public QuestionGroup(int num, String label) {
