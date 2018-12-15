@@ -1,4 +1,9 @@
-
+/**
+ * Starts up the QuestionChooser application
+ * 
+ * @author William
+ *
+ */
 public class MainDriver {
 
 	public static void main(String[] args) {
@@ -7,8 +12,5 @@ public class MainDriver {
 		mf.setVisible(true);
 		
 	}
-	
-	
-	
 	
 }
